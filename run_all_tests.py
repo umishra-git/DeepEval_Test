@@ -5,7 +5,7 @@ import os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'tests'))
 
 # Import all test modules
-from test_basics import test_answer_relevancy, test_multiple_cases
+from test_relevantanswer import test_answer_relevancy, test_multiple_cases
 from test_hallucination import test_hallucination_detection, test_multiple_hallucination_cases
 from test_toxicity import test_toxicity_detection, test_multiple_toxicity_cases
 from test_contextrelevancy import test_contextual_relevancy, test_multiple_contextual_relevancy_cases

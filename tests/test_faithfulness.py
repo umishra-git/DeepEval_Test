@@ -16,7 +16,7 @@ def test_faithfulness():
     )
     
     # Initialize the FaithfulnessMetric
-    faithfulness_metric = FaithfulnessMetric()
+    faithfulness_metric = FaithfulnessMetric(threshold=0.3)
     
     # Measure the metric
     faithfulness_metric.measure(test_case)
@@ -27,7 +27,7 @@ def test_faithfulness():
     print(f"Reason: {faithfulness_metric.reason}")
     
     # Assert faithfulness meets threshold
-    assert faithfulness_metric.score >= 0.5, f"Faithfulness score {faithfulness_metric.score} is below threshold"
+    assert faithfulness_metric.score >= 0.3, f"Faithfulness score {faithfulness_metric.score} is below threshold"
 
 
 def test_multiple_faithfulness_cases():

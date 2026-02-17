@@ -62,10 +62,10 @@ def test_multiple_cases():
         print(f"Output: {test_case.actual_output}")
         print(f"Score: {answer_relevancy.score}")
         
-        assert answer_relevancy.score >= 0.5, f"Test failed for input: {test_case.input}"
+        assert answer_relevancy.score >= 0.7, f"Test failed for input: {test_case.input}"
 
 
 if __name__ == "__main__":
     test_answer_relevancy()
-  #  test_multiple_cases()
+    test_multiple_cases()
     print("\nAll tests passed!")

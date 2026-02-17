@@ -45,14 +45,14 @@ test:unit:
     - main
     - develop
 
-test:basics:
+test:relevantanswer:
   stage: test
   image: python:3.9
   script:
     - echo "Creating .env file..."
     - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
     - echo "Running answer relevancy tests..."
-    - python tests/test_basics.py
+    - python tests/test_relevantanswer.py
   only:
     - merge_requests
     - main
