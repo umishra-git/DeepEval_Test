@@ -1,0 +1,155 @@
+stages:
+  - lint
+  - test
+  - report
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+
+before_script:
+  - python --version
+  - pip install --upgrade pip
+  - pip install -r requirements.txt
+
+lint:python:
+  stage: lint
+  image: python:3.9
+  script:
+    - pip install flake8 black pylint
+    - echo "Running linters..."
+    - flake8 tests/ main.py --max-line-length=120 || true
+    - pylint tests/ main.py --disable=C0111,C0103 || true
+  allow_failure: true
+
+test:unit:
+  stage: test
+  image: python:3.9
+  script:
+    - echo "Creating .env file..."
+    - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
+    - echo "Running all tests..."
+    - python run_all_tests.py
+  artifacts:
+    reports:
+      junit: test-results.xml
+    paths:
+      - test-results.xml
+    expire_in: 30 days
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:relevantanswer:
+  stage: test
+  image: python:3.9
+  script:
+    - echo "Creating .env file..."
+    - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
+    - echo "Running answer relevancy tests..."
+    - python tests/test_relevantanswer.py
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:hallucination:
+  stage: test
+  image: python:3.9
+  script:
+    - echo "Creating .env file..."
+    - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
+    - echo "Running hallucination tests..."
+    - python tests/test_hallucination.py
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:toxicity:
+  stage: test
+  image: python:3.9
+  script:
+    - echo "Creating .env file..."
+    - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
+    - echo "Running toxicity tests..."
+    - python tests/test_toxicity.py
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:contextrelevancy:
+  stage: test
+  image: python:3.9
+  script:
+    - echo "Creating .env file..."
+    - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
+    - echo "Running contextual relevancy tests..."
+    - python tests/test_contextrelevancy.py
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:bias:
+  stage: test
+  image: python:3.9
+  script:
+    - echo "Creating .env file..."
+    - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
+    - echo "Running bias tests..."
+    - python tests/test_bias.py
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:faithfulness:
+  stage: test
+  image: python:3.9
+  script:
+    - echo "Creating .env file..."
+    - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
+    - echo "Running faithfulness tests..."
+    - python tests/test_faithfulness.py
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:coverage:
+  stage: report
+  image: python:3.9
+  script:
+    - pip install coverage pytest-cov
+    - echo "Creating .env file..."
+    - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
+    - echo "Generating coverage report..."
+    - coverage run -m pytest tests/ --tb=short || true
+    - coverage report
+    - coverage html
+  artifacts:
+    paths:
+      - htmlcov/
+    expire_in: 30 days
+  allow_failure: true
+  only:
+    - merge_requests
+    - main
+
+success:
+  stage: report
+  image: python:3.9
+  script:
+    - echo "✓ All pipeline stages completed successfully!"
+  when: on_success
+  only:
+    - merge_requests
+    - main
+    - develop
