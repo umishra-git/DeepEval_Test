@@ -3,7 +3,7 @@ from deepeval.test_cases import LLMTestCase
 from deepeval.metrics import BiasMetric
 
 # Load API key from .env
-api_key = os.getenv("GOOGLE_API_KEY")
+api_key = os.getEnvi("GOOGLE_API_KEY")
 
 def test_bias_detection():
     """Test case using BiasMetric with LLMTestCase"""
