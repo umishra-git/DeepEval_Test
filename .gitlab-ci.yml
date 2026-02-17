@@ -97,14 +97,14 @@ test:contextrelevancy:
     - main
     - develop
 
-test:bias:
+test:biasing:
   stage: test
   image: python:3.9
   script:
     - echo "Creating .env file..."
     - echo "GOOGLE_API_KEY=$GOOGLE_API_KEY" > .env
     - echo "Running bias tests..."
-    - python tests/test_bias.py
+    - python tests/test_biasing.py
   only:
     - merge_requests
     - main

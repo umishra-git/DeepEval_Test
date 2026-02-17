@@ -9,7 +9,7 @@ from test_relevantanswer import test_answer_relevancy, test_multiple_cases
 from test_hallucination import test_hallucination_detection, test_multiple_hallucination_cases
 from test_toxicity import test_toxicity_detection, test_multiple_toxicity_cases
 from test_contextrelevancy import test_contextual_relevancy, test_multiple_contextual_relevancy_cases
-from test_bias import test_bias_detection, test_multiple_bias_cases
+from test_biasing import test_bias_detection, test_multiple_bias_cases
 from test_faithfulness import test_faithfulness, test_multiple_faithfulness_cases
 
 def run_all_tests():
